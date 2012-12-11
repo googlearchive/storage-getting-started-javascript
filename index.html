@@ -1,0 +1,537 @@
+<!--
+  Copyright (c) 2012 Google Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License"); you may not
+  use this file except in compliance with the License. You may obtain a copy of
+  the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+  License for the specific language governing permissions and limitations under
+  the License.
+
+  To run this sample, replace YOUR_API_KEY with your application's API key.
+  It can be found at https://code.google.com/apis/console under API
+  Access. Activate the Google Cloud Storage service at
+  https://code.google.com/apis/console/ under Services
+-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8' />
+    <script src="http://code.jquery.com/jquery-1.8.2.js"></script>
+    <script src="https://apis.google.com/js/client.js"></script>
+    <script type="text/javascript">
+    /**
+     * The id of your Google Cloud Storage Project.
+     */
+    var projectId = 'PROJECT_ID';
+
+    /**
+     * Enter a client ID for a web application from the Google Developer
+     * Console. In your Developer Console project, add a JavaScript origin
+     * that corresponds to the domain from where you will be running the
+     * script.
+     */
+    var clientId = 'YOUR_CLIENT_ID';
+
+    /**
+     * Enter the API key from the Google Developer Console, by following these
+     * steps:
+     * 1) Visit https://code.google.com/apis/console/?api=storage
+     * 2) Click on "API Access" in the left column
+     */
+    var apiKey = 'YOUR_API_KEY';
+
+    /**
+     * To enter one or more authentication scopes, refer to the documentation
+     * for the API.
+     */
+    var scopes = 'https://www.googleapis.com/auth/devstorage.full_control';
+
+    /**
+     * Constants for request parameters. Fill these values in with your custom
+     * information.
+     */
+    var API_VERSION = 'v1beta1';
+    var PROJECT = projectId;
+
+    /**
+     * The name of the new bucket to create.
+     */
+    var BUCKET = 'code-sample-bucket';
+
+    /**
+     * The name of the new object to create.
+     */
+    var OBJECT = 'test.htm';
+
+    /**
+     * Get this value from the API console.
+     */
+    var GROUP = 'group-0000000000000000000000000000000000000000000000000000000000000000';
+
+    /**
+     * Valid values are user-userId, user-email, group-groupId, group-email,
+     * allUsers, allAuthenticatedUsers
+     */
+    var ENTITY = 'allUsers';
+
+    /**
+     * Valid values are READER, OWNER
+     */
+    var ROLE = 'READER';
+
+    /**
+     * Valid values are READER, OWNER
+     */
+    var ROLE_OBJECT = 'READER';
+
+    /**
+     * A list of example calls to the Google Cloud Storage JavaScript client
+     * library, as well as associated explanations of each call.
+     */
+    var listApiRequestExplanations = {
+      'listBuckets': 'This API call queries the Google Cloud Storage API ' +
+        'for a list of buckets in your project, and returns the result as ' +
+        'a list of Google Cloud Storage buckets.',
+
+      'listObjects': 'This API call queries the Google Cloud Storage API ' +
+        'for a list of objects in your bucket, and returns the result as ' +
+        'a list of Google Cloud Storage objects.',
+
+      'listBucketsAccessControls': 'This API call queries the Google Cloud ' +
+        'Storage API for the list of access control lists on buckets in your ' +
+        'project and returns the result as a list of Google Cloud Storage ' +
+        'Access Control Lists.',
+
+      'listObjectsAccessControls': 'This API call queries the Google Cloud ' +
+        'Storage API for the list of access control lists on objects in your ' +
+        'bucket and returns the result as a list of Google Cloud Storage ' +
+        'Access Control Lists.',
+
+      'getBucket': 'This API call queries the Google Cloud Storage API ' +
+        'for a bucket in your project, and returns the result as a ' +
+        'Google Cloud Storage bucket.',
+
+      'getBucketAccessControls': 'This API call queries the Google Cloud ' +
+        'Storage API for the access control list on a specific bucket ' +
+        'and returns the result as a Google Cloud Storage Access Control List.',
+
+      'getObjectAccessControls': 'This API call queries the Google Cloud ' +
+        'Storage API for the access control list on a specific object ' +
+        'and returns the result as a Google Cloud Storage Access Control List.',
+
+      'insertBucket': 'This API call uses the Google Cloud Storage API ' +
+        'to insert a bucket into your project.',
+
+      'insertBucketAccessControls': 'This API uses the Google Cloud ' +
+        'Storage API to insert an access control list on a specific bucket ' +
+        'and returns the result as a Google Cloud Storage Access Control List.',
+
+      'insertObjectAccessControls': 'This API uses the Google Cloud ' +
+        'Storage API to insert an access control list on a specific object ' +
+        'and returns the result as a Google Cloud Storage Access Control List.',
+
+      'deleteBucket': 'This API uses the Google Cloud Storage API to delete ' +
+        'an empty bucket and returns an empty response to indicate success.',
+
+      'deleteObject': 'This API uses the Google Cloud Storage API to delete ' +
+        'an object and returns an empty response to indicate success.'
+    };
+
+    /**
+     * Google Cloud Storage API request to retrieve the list of buckets in
+     * your Google Cloud Storage project.
+     */
+    function listBuckets() {
+      var request = gapi.client.storage.buckets.list({
+        'projectId': PROJECT
+      });
+      executeRequest(request, 'listBuckets');
+    }
+
+    /**
+     * Google Cloud Storage API request to retrieve the list of objects in
+     * your Google Cloud Storage project.
+     */
+    function listObjects() {
+      var request = gapi.client.storage.objects.list({
+        'bucket': BUCKET
+      });
+      executeRequest(request, 'listObjects');
+    }
+
+    /**
+     * Google Cloud Storage API request to retrieve the access control list on
+     * a bucket in your Google Cloud Storage project.
+     */
+    function listBucketsAccessControls() {
+      var request = gapi.client.storage.bucketAccessControls.list({
+          'bucket': BUCKET
+      });
+      executeRequest(request, 'listBucketsAccessControls');
+    }
+
+    /**
+     * Google Cloud Storage API request to retrieve the access control list on
+     * an object in your Google Cloud Storage project.
+     */
+    function listObjectsAccessControls() {
+      var request = gapi.client.storage.objectAccessControls.list({
+          'bucket': BUCKET,
+          'object': OBJECT
+      });
+      executeRequest(request, 'listObjectsAccessControls');
+    }
+
+    /**
+     * Google Cloud Storage API request to retrieve a bucket in
+     * your Google Cloud Storage project.
+     */
+    function getBucket() {
+      var request = gapi.client.storage.buckets.get({
+        'bucket': BUCKET
+      });
+      executeRequest(request, 'getBucket');
+    }
+
+    /**
+     * Google Cloud Storage API request to retrieve a bucket's Access Control
+     * List in your Google Cloud Storage project.
+     */
+    function getBucketAccessControls() {
+      var request = gapi.client.storage.bucketAccessControls.get({
+        'bucket': BUCKET,
+        'entity': GROUP
+      });
+      executeRequest(request, 'getBucketAccessControls');
+    }
+
+    /**
+     * Google Cloud Storage API request to retrieve an object's Access Control
+     * List in your Google Cloud Storage project.
+     */
+    function getObjectAccessControls() {
+      var request = gapi.client.storage.objectAccessControls.get({
+        'bucket': BUCKET,
+        'object': OBJECT,
+        'entity': GROUP
+      });
+      executeRequest(request, 'getBucketAccessControls');
+    }
+
+    /**
+     * Google Cloud Storage API request to insert a bucket into
+     * your Google Cloud Storage project.
+     */
+    function insertBucket() {
+      resource = {
+        'id': BUCKET,
+        'projectId': PROJECT
+      };
+
+      var request = gapi.client.storage.buckets.insert({
+          'resource': resource
+      });
+      executeRequest(request, 'insertBucket');
+    }
+
+    /**
+     * Google Cloud Storage API request to insert an Access Control List into
+     * your Google Cloud Storage bucket.
+     */
+    function insertBucketAccessControls() {
+      resource = {
+        'entity': ENTITY,
+        'role': ROLE
+      };
+
+      var request = gapi.client.storage.bucketAccessControls.insert({
+          'bucket': BUCKET,
+          'resource': resource
+      });
+      executeRequest(request, 'insertBucketAccessControls');
+    }
+
+    /**
+     * Google Cloud Storage API request to insert an Access Control List into
+     * your Google Cloud Storage object.
+     */
+    function insertObjectAccessControls() {
+      resource = {
+        'entity': ENTITY,
+        'role': ROLE_OBJECT
+      };
+
+      var request = gapi.client.storage.objectAccessControls.insert({
+          'bucket': BUCKET,
+          'object': OBJECT,
+          'resource': resource
+      });
+      executeRequest(request, 'insertObjectAccessControls');
+    }
+
+    /**
+     * Google Cloud Storage API request to delete a Google Cloud Storage bucket.
+     */
+    function deleteBucket() {
+      var request = gapi.client.storage.buckets.delete({
+          'bucket': BUCKET
+      });
+      executeRequest(request, 'deleteBucket');
+    }
+
+    /**
+     * Google Cloud Storage API request to delete a Google Cloud Storage object.
+     */
+    function deleteObject() {
+      var request = gapi.client.storage.objects.delete({
+          'bucket': BUCKET,
+          'object': OBJECT
+      });
+      executeRequest(request, 'deleteObject');
+    }
+
+    /**
+     * Removes the current API result entry in the main-content div, adds the
+     * results of the entry for your function.
+     * @param {string} apiRequestName The name of the example API request.
+     */
+    function updateApiResultEntry(apiRequestName) {
+      listChildren = document.getElementById('main-content')
+        .childNodes;
+      if (listChildren.length > 1) {
+        listChildren[1].parentNode.removeChild(listChildren[1]);
+      }
+      if (apiRequestName != 'null') {
+        window[apiRequestName].apply(this);
+      }
+    }
+
+    /**
+     * Determines which API request has been selected, and makes a call to add
+     * its result entry.
+     */
+    function runSelectedApiRequest() {
+      var curElement = document.getElementById('api-selection-options');
+      var apiRequestName = curElement.options[curElement.selectedIndex].value;
+      updateApiResultEntry(apiRequestName);
+    }
+
+    /**
+     * Binds event listeners to handle a newly selected API request.
+     */
+    function addSelectionSwitchingListeners() {
+      document.getElementById('api-selection-options')
+        .addEventListener('change',
+      runSelectedApiRequest, false);
+    }
+
+    /**
+     * Template for getting JavaScript sample code snippets.
+     * @param {string} method The name of the Google Cloud Storage request
+     * @param {string} params The parameters passed to method
+     */
+    function getCodeSnippet(method, params) {
+      var objConstruction = "// Declare your parameter object\n";
+      objConstruction += "var params = {};";
+      objConstruction += "\n\n";
+
+      var param = "// Initialize your parameters \n";
+      for (i in params) {
+        param += "params['" + i + "'] = ";
+        param += JSON.stringify(params[i], null, '\t');
+        param += ";";
+        param += "\n";
+      }
+      param += "\n";
+
+      var methodCall = "// Make a request to the Google Cloud Storage API \n";
+      methodCall += "var request = gapi.client." + method + "(params);";
+      return objConstruction + param + methodCall;
+    }
+
+    /**
+     * Executes your Google Cloud Storage request object and, subsequently,
+     * inserts the response into the page.
+     * @param {string} request A Google Cloud Storage request object issued
+     *    from the Google Cloud Storage JavaScript client library.
+     * @param {string} apiRequestName The name of the example API request.
+     */
+    function executeRequest(request, apiRequestName) {
+      request.execute(function(resp) {
+        console.log(resp);
+        var apiRequestNode = document.createElement('div');
+        apiRequestNode.id = apiRequestName;
+
+        var apiRequestNodeHeader = document.createElement('h2');
+        apiRequestNodeHeader.innerHTML = apiRequestName;
+
+        var apiRequestExplanationNode = document.createElement('div');
+        apiRequestExplanationNode.id = apiRequestName + 'RequestExplanation';
+
+        var apiRequestExplanationNodeHeader = document.createElement('h3');
+        apiRequestExplanationNodeHeader.innerHTML = 'API Request Explanation';
+        apiRequestExplanationNode.appendChild(apiRequestExplanationNodeHeader);
+
+        var apiRequestExplanationEntry = document.createElement('p');
+        apiRequestExplanationEntry.innerHTML = 
+          listApiRequestExplanations[apiRequestName];
+        apiRequestExplanationNode.appendChild(apiRequestExplanationEntry);
+
+        apiRequestNode.appendChild(apiRequestNodeHeader);
+        apiRequestNode.appendChild(apiRequestExplanationNode);
+
+        var apiRequestCodeSnippetNode = document.createElement('div');
+        apiRequestCodeSnippetNode.id = apiRequestName + 'CodeSnippet';
+
+        var apiRequestCodeSnippetHeader = document.createElement('h3');
+        apiRequestCodeSnippetHeader.innerHTML = 'API Request Code Snippet';
+        apiRequestCodeSnippetNode.appendChild(apiRequestCodeSnippetHeader);
+
+        var apiRequestCodeSnippetEntry = document.createElement('pre');
+        apiRequestCodeSnippetEntry.innerHTML = getCodeSnippet(request.b.method,
+            request.b.rpcParams);
+
+        apiRequestCodeSnippetNode.appendChild(apiRequestCodeSnippetEntry);
+        apiRequestNode.appendChild(apiRequestCodeSnippetNode);
+
+        var apiResponseEntry = document.createElement('pre');
+        apiResponseEntry.innerHTML = JSON.stringify(resp.result, null, ' ');
+
+        var apiResponseNode = document.createElement('div');
+        apiResponseNode.id = apiRequestName + 'Response';
+
+        var apiResponseHeader = document.createElement('h3');
+        apiResponseHeader.innerHTML = 'API Response';
+        apiResponseNode.appendChild(apiResponseHeader);
+
+        var apiResponseEntry = document.createElement('pre');
+        apiResponseEntry.innerHTML = JSON.stringify(resp.result, null, ' ');
+
+        apiResponseNode.appendChild(apiResponseEntry);
+        apiRequestNode.appendChild(apiResponseNode);
+
+        var content = document.getElementById('main-content');
+        content.appendChild(apiRequestNode);
+      });
+    }
+
+    /**
+     * Set required API keys and check authentication status.
+     */
+    function handleClientLoad() {
+      gapi.client.setApiKey(apiKey);
+      window.setTimeout(checkAuth, 1);
+    }
+
+    /**
+     * Authorize Google Cloud Storage API.
+     */
+    function checkAuth() {
+      gapi.auth.authorize({
+        client_id: clientId,
+        scope: scopes,
+        immediate: true
+      }, handleAuthResult);
+    }
+
+    /**
+     * Handle authorization.
+     */
+    function handleAuthResult(authResult) {
+      var authorizeButton = document.getElementById('authorize-button');
+      if (authResult && !authResult.error) {
+        authorizeButton.style.visibility = 'hidden';
+        initializeApi();
+      } else {
+        authorizeButton.style.visibility = '';
+        authorizeButton.onclick = handleAuthClick;
+      }
+    }
+
+    /**
+     * Handle authorization click event.
+     */
+    function handleAuthClick(event) {
+      gapi.auth.authorize({
+        client_id: clientId,
+        scope: scopes,
+        immediate: false
+      }, handleAuthResult);
+      return false;
+    }
+
+    /**
+     * Load Google Cloud Storage API v1beta12.
+     */
+    function initializeApi() {
+      gapi.client.load('storage', API_VERSION);
+    }
+
+    /**
+     * Driver for sample application.
+     */
+    $(window)
+      .bind('load', function() {
+        addSelectionSwitchingListeners();
+        handleClientLoad();
+    });
+    </script>
+  </head>
+  <body>
+    <!--Add a button for the user to click to initiate auth sequence -->
+    <button id="authorize-button" style="visibility: hidden">Authorize</button>
+    <header>
+      <h1>Google Cloud Storage JavaScript Client Library Application</h1>
+    </header>
+    <label id="api-label">Try a sample API call!</label>
+    <select id="api-selection-options">
+      <option value="null">
+        Please select an example API call from the dropdown menu
+      </option>
+      <option value="listBuckets">
+        List Buckets
+      </option>
+      <option value="listObjects">
+        List Objects
+      </option>
+      <option value="listBucketsAccessControls">
+        List Buckets Access Control List
+      </option>
+      <option value="listObjectsAccessControls">
+        List Objects Access Control List
+      </option>
+      <option value="getBucket">
+        Get Bucket
+      </option>
+      <option value="getBucketAccessControls">
+        Get Bucket Access Controls
+      </option>
+      <option value="getObjectAccessControls">
+        Get Object Access Controls
+      </option>
+      <option value="insertBucket">
+        Insert Bucket
+      </option>
+      <option value="insertBucketAccessControls">
+        Insert Bucket Access Controls
+      </option>
+      <option value="insertObjectAccessControls">
+        Insert Object Access Controls
+      </option>
+      <option value="deleteBucket">
+        Delete Bucket
+      </option>
+      <option value="deleteObject">
+        Delete Object
+      </option>
+    </select>
+    <div id="main-content">
+    </div>
+  </body>
+</html>
