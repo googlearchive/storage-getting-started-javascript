@@ -42,16 +42,16 @@ the error message and you should see request details like these:
 
 Request Details
 ---------------
--scope=https://www.googleapis.com/auth/devstorage.full_control
--response_type=token
--access_type=online
--redirect_uri=postmessage
--approval_prompt=auto
--proxy=oauth2relay1195330867
--origin=[redacted]
--state=501277282
--client_id=[redacted]
--authuser=0
+- scope=https://www.googleapis.com/auth/devstorage.full_control
+- response_type=token
+- access_type=online
+- redirect_uri=postmessage
+- approval_prompt=auto
+- proxy=oauth2relay1195330867
+- origin=[redacted]
+- state=501277282
+- client_id=[redacted]
+- authuser=0
 
 The value shown for the "origin" field is the one you'll want to
 administer in the JavaScript origins section on the APIs console.
