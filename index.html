@@ -394,8 +394,8 @@
         apiRequestCodeSnippetNode.appendChild(apiRequestCodeSnippetHeader);
 
         var apiRequestCodeSnippetEntry = document.createElement('pre');
-        apiRequestCodeSnippetEntry.innerHTML = getCodeSnippet(request.b.method,
-            request.b.rpcParams);
+        apiRequestCodeSnippetEntry.innerHTML = getCodeSnippet(request.method,
+            request.rpcParams);
 
         apiRequestCodeSnippetNode.appendChild(apiRequestCodeSnippetEntry);
         apiRequestNode.appendChild(apiRequestCodeSnippetNode);
