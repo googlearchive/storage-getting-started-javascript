@@ -28,7 +28,7 @@
     /**
      * The id of your Google Cloud Storage Project.
      */
-    var projectId = 'PROJECT_ID';
+    var projectId = 'YOUR_PROJECT_ID';
 
     /**
      * Enter a client ID for a web application from the Google Developer
@@ -65,14 +65,15 @@
     var BUCKET = 'code-sample-bucket';
 
     /**
-     * The name of the new object to create.
+     * The name of the object inserted via insertObject method.  
      */
-    var OBJECT = 'test.htm';
+    var object = "";
 
     /**
      * Get this value from the API console.
      */
-    var GROUP = 'group-0000000000000000000000000000000000000000000000000000000000000000';
+    var GROUP = 
+    'group-0000000000000000000000000000000000000000000000000000000000000000';
 
     /**
      * Valid values are user-userId, user-email, group-groupId, group-email,
@@ -127,6 +128,9 @@
 
       'insertBucket': 'This API call uses the Google Cloud Storage API ' +
         'to insert a bucket into your project.',
+
+      'insertObject': 'This API call uses the Google Cloud Storage API ' +
+        'to insert an object into your bucket.',
 
       'insertBucketAccessControls': 'This API uses the Google Cloud ' +
         'Storage API to insert an access control list on a specific bucket ' +
@@ -183,7 +187,7 @@
     function listObjectsAccessControls() {
       var request = gapi.client.storage.objectAccessControls.list({
           'bucket': BUCKET,
-          'object': OBJECT
+          'object': object
       });
       executeRequest(request, 'listObjectsAccessControls');
     }
@@ -218,10 +222,10 @@
     function getObjectAccessControls() {
       var request = gapi.client.storage.objectAccessControls.get({
         'bucket': BUCKET,
-        'object': OBJECT,
+        'object': object,
         'entity': GROUP
       });
-      executeRequest(request, 'getBucketAccessControls');
+      executeRequest(request, 'getObjectAccessControls');
     }
 
     /**
@@ -238,6 +242,73 @@
           'resource': resource
       });
       executeRequest(request, 'insertBucket');
+    }
+
+    /**
+     * Google Cloud Storage API request to insert an object into
+     * your Google Cloud Storage bucket.
+     */
+    function insertObject(event) {
+      try{
+        var fileData = event.target.files[0];
+      } 
+      catch(e) {
+        //'Insert Object' selected from the API Commands select list
+        //Display insert object button and then exit function
+        filePicker.style.display = 'block';
+        return;
+      }
+      const boundary = '-------314159265358979323846';
+      const delimiter = "\r\n--" + boundary + "\r\n";
+      const close_delim = "\r\n--" + boundary + "--";
+
+      var reader = new FileReader();
+      reader.readAsBinaryString(fileData);
+      reader.onload = function(e) {
+        var contentType = fileData.type || 'application/octet-stream';
+        var metadata = {
+          'name': fileData.name,
+          'mimeType': contentType
+        };
+
+        var base64Data = btoa(reader.result);
+        var multipartRequestBody =
+          delimiter +
+          'Content-Type: application/json\r\n\r\n' +
+          JSON.stringify(metadata) +
+          delimiter +
+          'Content-Type: ' + contentType + '\r\n' +
+          'Content-Transfer-Encoding: base64\r\n' +
+          '\r\n' +
+          base64Data +
+          close_delim;
+
+        //Note: gapi.client.storage.objects.insert() can only insert
+        //small objects (under 64k) so to support larger file sizes
+        //we're using the generic HTTP request method gapi.client.request()
+        var request = gapi.client.request({
+          'path': '/upload/storage/v1beta2/b/' + BUCKET + '/o',
+          'method': 'POST',
+          'params': {'uploadType': 'multipart'},
+          'headers': {
+            'Content-Type': 'multipart/mixed; boundary="' + boundary + '"'
+          },
+          'body': multipartRequestBody});
+          //Remove the current API result entry in the main-content div
+          listChildren = document.getElementById('main-content').childNodes;
+          if (listChildren.length > 1) {
+            listChildren[1].parentNode.removeChild(listChildren[1]);
+          }
+        try{
+          //Execute the insert object request
+          executeRequest(request, 'insertObject');
+          //Store the name of the inserted object 
+          object = fileData.name;	  
+        }
+        catch(e) {
+          alert('An error has occurred: ' + e.message);
+        }
+      }
     }
 
     /**
@@ -269,7 +340,7 @@
 
       var request = gapi.client.storage.objectAccessControls.insert({
           'bucket': BUCKET,
-          'object': OBJECT,
+          'object': object,
           'resource': resource
       });
       executeRequest(request, 'insertObjectAccessControls');
@@ -291,7 +362,7 @@
     function deleteObject() {
       var request = gapi.client.storage.objects.delete({
           'bucket': BUCKET,
-          'object': OBJECT
+          'object': object
       });
       executeRequest(request, 'deleteObject');
     }
@@ -355,6 +426,7 @@
       return objConstruction + param + methodCall;
     }
 
+
     /**
      * Executes your Google Cloud Storage request object and, subsequently,
      * inserts the response into the page.
@@ -394,14 +466,22 @@
         apiRequestCodeSnippetNode.appendChild(apiRequestCodeSnippetHeader);
 
         var apiRequestCodeSnippetEntry = document.createElement('pre');
-        apiRequestCodeSnippetEntry.innerHTML = getCodeSnippet(request.method,
-            request.rpcParams);
 
+        //If the selected API command is not 'insertObject', pass the request
+        //paramaters to the getCodeSnippet method call as 'request.B.rpcParams'
+        //else pass request paramaters as 'request.B' 
+        if (apiRequestName != 'insertObject') {
+          apiRequestCodeSnippetEntry.innerHTML = 
+            getCodeSnippet(request.B.method, request.B.rpcParams);
+          //Selected API Command is not 'insertObject'
+          //hide insert object button
+          filePicker.style.display = 'none';
+        } else {
+          apiRequestCodeSnippetEntry.innerHTML = 
+            getCodeSnippet(request.B.method, request.B);
+        }
         apiRequestCodeSnippetNode.appendChild(apiRequestCodeSnippetEntry);
         apiRequestNode.appendChild(apiRequestCodeSnippetNode);
-
-        var apiResponseEntry = document.createElement('pre');
-        apiResponseEntry.innerHTML = JSON.stringify(resp.result, null, ' ');
 
         var apiResponseNode = document.createElement('div');
         apiResponseNode.id = apiRequestName + 'Response';
@@ -411,7 +491,7 @@
         apiResponseNode.appendChild(apiResponseHeader);
 
         var apiResponseEntry = document.createElement('pre');
-        apiResponseEntry.innerHTML = JSON.stringify(resp.result, null, ' ');
+        apiResponseEntry.innerHTML = JSON.stringify(resp, null, ' ');
 
         apiResponseNode.appendChild(apiResponseEntry);
         apiRequestNode.appendChild(apiResponseNode);
@@ -448,6 +528,7 @@
       if (authResult && !authResult.error) {
         authorizeButton.style.visibility = 'hidden';
         initializeApi();
+	filePicker.onchange = insertObject;
       } else {
         authorizeButton.style.visibility = '';
         authorizeButton.onclick = handleAuthClick;
@@ -518,6 +599,9 @@
       <option value="insertBucket">
         Insert Bucket
       </option>
+      <option value="insertObject">
+        Insert Object
+      </option>
       <option value="insertBucketAccessControls">
         Insert Bucket Access Controls
       </option>
@@ -531,6 +615,8 @@
         Delete Object
       </option>
     </select>
+    <br/>
+	<input type="file" id="filePicker" style="display: none" />
     <div id="main-content">
     </div>
   </body>

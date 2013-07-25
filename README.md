@@ -66,7 +66,6 @@ Open index.html in a web browser and click the "Authorize" button near the
 top left of the page. This will request access to your Google account.
 Access will be valid for about an hour.
 
-Enter a valid bucket name in the bucket name text field and press the
-button to obtain a listing of the bucket contents. You should see a
-formatted report appended to the bottom of the page with the results
-of the bucket list.
+Select the "List Buckets" API command from the drop-down menu to obtain 
+a listing of your project's buckets. You should see a formatted report 
+appended to the bottom of the page with the results of the bucket list.
