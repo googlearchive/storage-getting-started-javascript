@@ -13,20 +13,19 @@ HTML and JavaScript code needed to support the following capabilities:
 - Accept a user supplied bucket name and use the Google Cloud Storage
   JSON API to obtain and display a formatted list of bucket contents.
 
-Because everything is embedded in one file, this application can be loaded
-directly into a web browser from a file on a local hard drive - there's no
-need to setup a web server.
-
 Google Cloud Storage documentation is available at
 http://developers.google.com/storage/
 
 ## Setup
-PREREQUISITE: Enable Google Cloud Storage for your project on the Google
-APIs console and setup billing so that you'll be authorized to use
+PREREQUISITE: Enable "Google Cloud Storage" and the "Google Cloud 
+Storage JSON API" for your project in the "Services" tab on the Google
+APIs console (https://code.google.com/apis/console)
+
+Also setup billing so that you'll be authorized to use
 Google Cloud Storage with this app. See this page for more details:
 https://developers.google.com/storage/docs/signup.
 
-1. Download the two files: index.html and README.txt (this file).
+1. Download the two files: index.html and README.md (this file).
 
 2. Open the index.html file with a text editor and make the following changes:
 - Create a client ID for Web Applications via the "API Access" tab
@@ -62,9 +61,10 @@ with their associated values.
 3. Save the changes to index.html.
 
 ## Usage
-Open index.html in a web browser and click the "Authorize" button near the
-top left of the page. This will request access to your Google account.
-Access will be valid for about an hour.
+Copy your updated index.html to a web server and then open it in a web 
+browser. Click the "Authorize" button near the top left of the page. 
+This will request access to your Google account. Access will be valid 
+for about an hour.
 
 Select the "List Buckets" API command from the drop-down menu to obtain 
 a listing of your project's buckets. You should see a formatted report 
