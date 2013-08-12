@@ -28,10 +28,10 @@ https://developers.google.com/storage/docs/signup.
 1. Download the two files: index.html and README.md (this file).
 
 2. Open the index.html file with a text editor and make the following changes:
-- Create a client ID for Web Applications via the "API Access" tab
+ - Create a client ID for Web Applications via the "API Access" tab
 on the APIs console (https://code.google.com/apis/console/#access).
 
-- Again on the APIs console page, add your JavaScript origin (the root
+ - Again on the APIs console page, add your JavaScript origin (the root
 URL from which your application will run) to the JavaScript origins
 section of your Client ID on the API Access tab. If you're not sure
 what this is, you can skip this step and continue with the remaining
@@ -39,23 +39,22 @@ steps below - in that case, when you get to the point where you try
 the app, you'll see a dialog showing "Error: origin_mismatch". Expand
 the error message and you should see request details like these:
 
-Request Details
----------------
-- scope=https://www.googleapis.com/auth/devstorage.full_control
-- response_type=token
-- access_type=online
-- redirect_uri=postmessage
-- approval_prompt=auto
-- proxy=oauth2relay1195330867
-- origin=[redacted]
-- state=501277282
-- client_id=[redacted]
-- authuser=0
+ ###Request Details
+ - scope=https://www.googleapis.com/auth/devstorage.full_control
+ - response_type=token
+ - access_type=online
+ - redirect_uri=postmessage
+ - approval_prompt=auto
+ - proxy=oauth2relay1195330867
+ - origin=[redacted]
+ - state=501277282
+ - client_id=[redacted]
+ - authuser=0
 
-The value shown for the "origin" field is the one you'll want to
+ The value shown for the "origin" field is the one you'll want to
 administer in the JavaScript origins section on the APIs console.
 
-- In index.html, search and replace all strings starting with "YOUR_"
+ - In index.html, search and replace all strings starting with "YOUR_"
 with their associated values.
 
 3. Save the changes to index.html.
