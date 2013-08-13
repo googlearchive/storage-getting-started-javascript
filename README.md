@@ -40,19 +40,19 @@ steps below - in that case, when you get to the point where you try
 the app, you'll see a dialog showing "Error: origin_mismatch". Expand
 the error message and you should see request details like these:
 
-  ###Request Details
-  - scope=https://www.googleapis.com/auth/devstorage.full_control
-  - response_type=token
-  - access_type=online
-  - redirect_uri=postmessage
-  - approval_prompt=auto
-  - proxy=oauth2relay1195330867
-  - origin=[redacted]
-  - state=501277282
-  - client_id=[redacted]
-  - authuser=0
+   ####Request Details
+   - scope=https://www.googleapis.com/auth/devstorage.full_control
+   - response_type=token
+   - access_type=online
+   - redirect_uri=postmessage
+   - approval_prompt=auto
+   - proxy=oauth2relay1195330867
+   - origin=[redacted]
+   - state=501277282
+   - client_id=[redacted]
+   - authuser=0
 
-  The value shown for the "origin" field is the one you'll want to
+   The value shown for the "origin" field is the one you'll want to
 administer in the JavaScript origins section on the APIs console.
 
   - In index.html, search and replace all strings starting with "YOUR_"
@@ -60,7 +60,7 @@ with their associated values. Also update the variable titled "BUCKET"
 with your own bucket name to be created. The guidelines for bucket naming
 can be found here: https://developers.google.com/storage/docs/bucketnaming
 
-3. Save the changes to index.html.
+3\. Save the changes to index.html.
 
 ## Usage
 Copy your updated index.html to a web server and then open it in a web 
