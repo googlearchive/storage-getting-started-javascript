@@ -55,6 +55,11 @@ the error message and you should see request details like these:
    The value shown for the "origin" field is the one you'll want to
 administer in the JavaScript origins section on the APIs console.
 
+  - In the APIs console page "API Access" section replace the `apiKey` 
+with the API Key from "Simple API Access". If you plan on running the 
+sample on localhost then delete any "Referers" so the console displays
+"Any referer allowed."
+
   - In index.html, search and replace all strings starting with "YOUR_"
 with their associated values. Also update the variable titled "BUCKET"
 with your own bucket name to be created. The guidelines for bucket naming
