@@ -18,8 +18,9 @@ http://developers.google.com/storage/
 
 ## Setup
 PREREQUISITE: Enable "Google Cloud Storage" and the "Google Cloud 
-Storage JSON API" for your project in the "Services" tab on the Google
-APIs console (https://code.google.com/apis/console)
+Storage JSON API" for your project by selecting “APIs & auth” and 
+then the “APIs” subsection in the Google Developers Console. 
+ (https://cloud.google.com/console)
 
 Also setup billing so that you'll be authorized to use
 Google Cloud Storage with this app. See this page for more details:
@@ -29,16 +30,17 @@ https://developers.google.com/storage/docs/signup.
 
 2. Open the index.html file with a text editor and make the following changes:
 
-  - Create a client ID for Web Applications via the "API Access" tab
-on the APIs console (https://code.google.com/apis/console/#access).
+  - Create a Client ID for Web Applications via the "APIs & auth", 
+“Credentials” section in the Google Developers Console
+(https://cloud.google.com/console).
 
-  - Again on the APIs console page, add your JavaScript origin (the root
-URL from which your application will run) to the JavaScript origins
-section of your Client ID on the API Access tab. If you're not sure
-what this is, you can skip this step and continue with the remaining
-steps below - in that case, when you get to the point where you try
-the app, you'll see a dialog showing "Error: origin_mismatch". Expand
-the error message and you should see request details like these:
+  - Again in the same section, add your JavaScript origin (the root
+URL from which your application will run) to the "JavaScript Origins"
+section of your Client ID. If you're not sure what this is, you can 
+skip this step and continue with the remaining steps below - in that 
+case, when you get to the point where you try the app, you'll see 
+a dialog showing "Error: origin_mismatch". Expand the error message 
+and you should see request details like these:
 
    ####Request Details
    - scope=https://www.googleapis.com/auth/devstorage.full_control
@@ -53,17 +55,26 @@ the error message and you should see request details like these:
    - authuser=0
 
    The value shown for the "origin" field is the one you'll want to
-administer in the JavaScript origins section on the APIs console.
+add in the “JavaScript Origins” section in the Developers 
+Console under “APIs & auth” and then “Credentials”.
 
-  - In the APIs console page "API Access" section replace the `apiKey` 
-with the API Key from "Simple API Access". If you plan on running the 
-sample on localhost then delete any "Referers" so the console displays
-"Any referer allowed."
+  - In the Developers Console under “APIs & auth”, “Credentials”, 
+scroll down to the "Public API Access" section and replace the apiKey 
+value "YOUR_API_KEY" in index.html with the “API Key” value listed there. 
+If you plan on running the sample on localhost then delete any "Referers" 
+so the console displays "Any referer allowed."
 
   - In index.html, search and replace all strings starting with "YOUR_"
 with their associated values. Also update the variable titled "BUCKET"
 with your own bucket name to be created. The guidelines for bucket naming
 can be found here: https://developers.google.com/storage/docs/bucketnaming
+Finally update the variable titled “GROUP” with your own GROUP ID.  Get 
+this value from the Developers Console. Click on the “Cloud Storage” 
+service in the Left column and then select “Project Dashboard”. Use one 
+of the Google Cloud Storage IDs listed combined with the prefix “group-”, 
+resulting in a string like: 
+'group-0000000000000000000000000000000000000000000000000000000000000000'
+
 
 3\. Save the changes to index.html.
 

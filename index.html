@@ -13,41 +13,40 @@
   License for the specific language governing permissions and limitations under
   the License.
 
-  To run this sample, replace YOUR_API_KEY with your application's API key.
-  It can be found at https://code.google.com/apis/console under API
-  Access. Activate the Google Cloud Storage service at
-  https://code.google.com/apis/console/ under Services
 -->
 <!DOCTYPE html>
 <html>
   <head>
     <meta charset='utf-8' />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
     <script src="https://apis.google.com/js/client.js"></script>
     <script type="text/javascript">
 
     /**
-     * The number of your Google Cloud Storage Project.
+     * The Project ID of your Google Cloud Storage Project.
      */
-    var projectNumber = 'YOUR_PROJECT_NUMBER';
+    var PROJECT = 'YOUR_PROJECT_ID';
 
     /**
-     * Enter a client ID for a web application from the Google Developer
-     * Console. In your Developer Console project, add a JavaScript origin
+     * Enter a client ID for a web application from the Google Developers
+     * Console on the "APIs & auth", "Credentials" page. 
+     * In your Developers Console project add a JavaScript origin
      * that corresponds to the domain from where you will be running the
-     * script.
+     * script. For more info see:
+     * https://developers.google.com/console/help/new/#generatingoauth2
      */
     var clientId = 'YOUR_CLIENT_ID';
 
-    /**
-     * Enter the API key from the Google Developer Console, by following these
-     * steps:
-     * 1) Visit https://code.google.com/apis/console/?api=storage
-     * 2) Click on "API Access" in the left column
-     * 3) Find section "Simple API Access" and use the "API key." If sample is
-     * being run on localhost then delete all "Referers" and save. Setting 
-     * should display "Any referer allowed."
-     */
+   /**
+    * Enter the API key from the Google Developers Console, by following these
+    * steps:
+    * 1) Visit https://cloud.google.com/console and select your project
+    * 2) Click on "APIs & auth" in the left column and then click “Credentials”
+    * 3) Find section "Public API Access" and use the "API key." If sample is
+    * being run on localhost then delete all "Referers" and save. Setting
+    * should display "Any referer allowed." For more info see:
+    * https://developers.google.com/console/help/new/#generatingdevkeys
+    */
     var apiKey = 'YOUR_API_KEY';
 
     /**
@@ -60,11 +59,12 @@
      * Constants for request parameters. Fill these values in with your custom
      * information.
      */
-    var API_VERSION = 'v1beta1';
-    var PROJECT = projectNumber;
+    var API_VERSION = 'v1beta2';
 
     /**
-     * The name of the new bucket to create.
+     * Enter a unique bucket name to create a new bucket. The guidelines for
+     * bucket naming can be found here:
+     * https://developers.google.com/storage/docs/bucketnaming
      */
     var BUCKET = 'code-sample-bucket';
 
@@ -74,7 +74,11 @@
     var object = "";
 
     /**
-     * Get this value from the API console.
+     * Get this value from the Developers Console. Click on the 
+     * “Cloud Storage” service in the Left column and then select 
+     * “Project Dashboard”. Use one of the Google Cloud Storage IDs 
+     * listed combined with the prefix “group-” resulting in a string 
+     * like the example below. 
      */
     var GROUP = 
     'group-0000000000000000000000000000000000000000000000000000000000000000';
@@ -157,7 +161,7 @@
      */
     function listBuckets() {
       var request = gapi.client.storage.buckets.list({
-        'projectId': PROJECT
+        'project': PROJECT
       });
       executeRequest(request, 'listBuckets');
     }
@@ -238,11 +242,11 @@
      */
     function insertBucket() {
       resource = {
-        'id': BUCKET,
-        'projectId': PROJECT
+        'name': BUCKET
       };
 
       var request = gapi.client.storage.buckets.insert({
+          'project': PROJECT,
           'resource': resource
       });
       executeRequest(request, 'insertBucket');
@@ -582,14 +586,8 @@
       <option value="listBuckets">
         List Buckets
       </option>
-      <option value="listObjects">
-        List Objects
-      </option>
-      <option value="listBucketsAccessControls">
-        List Buckets Access Control List
-      </option>
-      <option value="listObjectsAccessControls">
-        List Objects Access Control List
+      <option value="insertBucket">
+        Insert Bucket
       </option>
       <option value="getBucket">
         Get Bucket
@@ -597,26 +595,32 @@
       <option value="getBucketAccessControls">
         Get Bucket Access Controls
       </option>
-      <option value="getObjectAccessControls">
-        Get Object Access Controls
+      <option value="insertBucketAccessControls">
+        Insert Bucket Access Controls
       </option>
-      <option value="insertBucket">
-        Insert Bucket
+      <option value="listBucketsAccessControls">
+        List Buckets Access Control List
       </option>
       <option value="insertObject">
         Insert Object
       </option>
-      <option value="insertBucketAccessControls">
-        Insert Bucket Access Controls
+      <option value="listObjects">
+        List Objects
+      </option>
+      <option value="getObjectAccessControls">
+        Get Object Access Controls
       </option>
       <option value="insertObjectAccessControls">
         Insert Object Access Controls
       </option>
-      <option value="deleteBucket">
-        Delete Bucket
+      <option value="listObjectsAccessControls">
+        List Objects Access Control List
       </option>
       <option value="deleteObject">
         Delete Object
+      </option>
+      <option value="deleteBucket">
+        Delete Bucket
       </option>
     </select>
     <br/>
