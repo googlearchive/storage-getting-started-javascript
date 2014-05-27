@@ -87,3 +87,6 @@ for about an hour.
 Select the "List Buckets" API command from the drop-down menu to obtain 
 a listing of your project's buckets. You should see a formatted report 
 appended to the bottom of the page with the results of the bucket list.
+
+## More Information
+See [https://developers.google.com/storage/docs/json_api/v1/json-api-javascript-samples](https://developers.google.com/storage/docs/json_api/v1/json-api-javascript-samples)
