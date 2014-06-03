@@ -19,7 +19,7 @@
   <head>
     <meta charset='utf-8' />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
-    <script src="https://apis.google.com/js/client.js"></script>
+    <script src="https://apis.google.com/js/client.js?onload=googleJsApiOnLoad"></script>
     <script type="text/javascript">
 
     /**
@@ -512,9 +512,11 @@
     /**
      * Set required API keys and check authentication status.
      */
-    function handleClientLoad() {
+//    function handleClientLoad() {
+    function googleJsApiOnLoad(){
       gapi.client.setApiKey(apiKey);
-      window.setTimeout(checkAuth, 1);
+  //    window.setTimeout(checkAuth, 1);
+      checkAuth();
     }
 
     /**
@@ -568,7 +570,7 @@
     $(window)
       .bind('load', function() {
         addSelectionSwitchingListeners();
-        handleClientLoad();
+        // handleClientLoad(); use the "onload" parameter
     });
     </script>
   </head>
