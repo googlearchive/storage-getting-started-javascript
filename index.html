@@ -512,10 +512,8 @@
     /**
      * Set required API keys and check authentication status.
      */
-//    function handleClientLoad() {
     function googleJsApiOnLoad(){
       gapi.client.setApiKey(apiKey);
-  //    window.setTimeout(checkAuth, 1);
       checkAuth();
     }
 
@@ -567,10 +565,8 @@
     /**
      * Driver for sample application.
      */
-    $(window)
-      .bind('load', function() {
-        addSelectionSwitchingListeners();
-        // handleClientLoad(); use the "onload" parameter
+    $(function(){
+    	addSelectionSwitchingListeners();	
     });
     </script>
   </head>
