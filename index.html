@@ -76,8 +76,8 @@
     /**
      * Get this value from the Developers Console. Click on the 
      * “Cloud Storage” service in the Left column and then select 
-     * “Project Dashboard”. Use one of the Google Cloud Storage IDs 
-     * listed combined with the prefix “group-” resulting in a string 
+     * “Project Dashboard”. Use one of the Google Cloud Storage group IDs 
+     * listed and combine with the prefix “group-” to get a string 
      * like the example below. 
      */
     var GROUP = 
@@ -295,7 +295,7 @@
         //small objects (under 64k) so to support larger file sizes
         //we're using the generic HTTP request method gapi.client.request()
         var request = gapi.client.request({
-          'path': '/upload/storage/v1beta2/b/' + BUCKET + '/o',
+          'path': '/upload/storage/' + API_VERSION + '/b/' + BUCKET + '/o',
           'method': 'POST',
           'params': {'uploadType': 'multipart'},
           'headers': {
