@@ -476,17 +476,17 @@
         var apiRequestCodeSnippetEntry = document.createElement('pre');
 
         //If the selected API command is not 'insertObject', pass the request
-        //paramaters to the getCodeSnippet method call as 'request.B.rpcParams'
-        //else pass request paramaters as 'request.B' 
+        //paramaters to the getCodeSnippet method call as 'request.wc.wc.params'
+        //else pass request paramaters as 'request.wc.wc' 
         if (apiRequestName != 'insertObject') {
           apiRequestCodeSnippetEntry.innerHTML = 
-            getCodeSnippet(request.B.method, request.B.rpcParams);
+            getCodeSnippet(request.wc.wc.method, request.wc.wc.params);
           //Selected API Command is not 'insertObject'
           //hide insert object button
           filePicker.style.display = 'none';
         } else {
           apiRequestCodeSnippetEntry.innerHTML = 
-            getCodeSnippet(request.B.method, request.B);
+            getCodeSnippet(request.wc.wc.method, request.wc.wc);
         }
         apiRequestCodeSnippetNode.appendChild(apiRequestCodeSnippetEntry);
         apiRequestNode.appendChild(apiRequestCodeSnippetNode);
