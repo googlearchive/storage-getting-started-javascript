@@ -1,3 +1,9 @@
+![status: inactive](https://img.shields.io/badge/status-inactive-red.svg)
+
+This project is no longer actively developed or maintained.
+
+Rather than accessing Google Cloud Storage directly from the browser, we recommend you use a server-side library such as [gcloud-node](https://googlecloudplatform.github.io/gcloud-node).
+
 # Google Cloud Storage JavaScript Sample Application
 
 ## Description
